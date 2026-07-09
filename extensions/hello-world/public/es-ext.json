@@ -1,0 +1,13 @@
+{
+  "manifest_version": 1,
+  "extension_api_version": "1",
+  "name": "Hello, World!",
+  "version": "1.0",
+  "description": "A simple extension starting point for development",
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "permissions": [
+    "sidePanel"
+  ]
+}
