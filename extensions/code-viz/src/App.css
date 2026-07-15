@@ -1,3 +1,44 @@
+.editor-contents {
+  max-width: 100%;
+  overflow: auto;
+  transform: translate3d(0, 0, 0);
+  transform-origin: center bottom;
+}
+
+.editor-contents--playing {
+  animation: editor-contents-dance 600ms cubic-bezier(0.3, 0.7, 0.4, 1) infinite;
+  will-change: transform;
+}
+
+@keyframes editor-contents-dance {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+
+  22% {
+    transform: translate3d(-4px, -12px, 0) rotate(-1deg) scale(1.015);
+  }
+
+  44% {
+    transform: translate3d(0, 2px, 0) rotate(0deg) scale(1.02, 0.98);
+  }
+
+  68% {
+    transform: translate3d(4px, -8px, 0) rotate(1deg) scale(1.01);
+  }
+
+  84% {
+    transform: translate3d(0, 1px, 0) rotate(0deg) scale(1.01, 0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editor-contents--playing {
+    animation: none;
+  }
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;

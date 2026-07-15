@@ -28,7 +28,7 @@ interface PlaybackStatus {
 }
 
 // Replace this with the origin hosting EarSketch.
-// const EARSKE​TCH_ORIGIN = "https://earsketch.gatech.edu"
+// const EARSKETCH_ORIGIN = "https://earsketch.gatech.edu"
 
 function requestEarSketch<T>(fn: string): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -76,8 +76,6 @@ export function EarSketchStatus() {
 
   const refresh = useCallback(async () => {
     try {
-      setError(null)
-
       // Query sequentially because the current API responses do not include
       // request IDs for matching concurrent requests.
       const contents = await requestEarSketch<string>(
@@ -89,6 +87,7 @@ export function EarSketchStatus() {
           "getPlaybackStatus"
         )
 
+      setError(null)
       setEditorContents(contents)
       setPlayback(playbackStatus)
     } catch (err) {
@@ -99,45 +98,32 @@ export function EarSketchStatus() {
   }, [])
 
   useEffect(() => {
-    void refresh()
+    const initialRefresh = window.setTimeout(() => {
+      void refresh()
+    }, 0)
 
     // Poll if the extension should stay synchronized with EarSketch.
     const interval = window.setInterval(() => {
       void refresh()
     }, 1000)
 
-    return () => window.clearInterval(interval)
+    return () => {
+      window.clearTimeout(initialRefresh)
+      window.clearInterval(interval)
+    }
   }, [refresh])
 
   return (
     <main>
-      <button type="button" onClick={() => void refresh()}>
-        Refresh
-      </button>
-
       {error && <p role="alert">{error}</p>}
 
       <section>
-        <h2>Playback</h2>
-
-        {playback ? (
-          <>
-            <p>{playback.isPlaying ? "Playing" : "Paused"}</p>
-            <p>
-              Last changed:{" "}
-              {new Date(
-                playback.lastChangeTimestamp
-              ).toLocaleString()}
-            </p>
-          </>
-        ) : (
-          <p>Loading playback status…</p>
-        )}
-      </section>
-
-      <section>
-        <h2>Editor contents</h2>
-        <pre>
+        {/* <h2>Editor contents</h2> */}
+        <pre
+          className={`editor-contents${
+            playback?.isPlaying ? " editor-contents--playing" : ""
+          }`}
+        >
           <code>{editorContents}</code>
         </pre>
       </section>
