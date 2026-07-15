@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, type CSSProperties } from "react"
 
 function useExtCommsLogger() {
   return useEffect(() => {
@@ -25,6 +25,55 @@ export function CodeViz() {
 interface PlaybackStatus {
   isPlaying: boolean
   lastChangeTimestamp: number
+}
+
+interface EditorDanceStyle extends CSSProperties {
+  "--dance-left": string
+  "--dance-right": string
+  "--dance-rise": string
+  "--dance-rebound": string
+  "--editor-background": string
+  "--editor-foreground": string
+}
+
+const stillEditorStyle: EditorDanceStyle = {
+  "--dance-left": "-4px",
+  "--dance-right": "4px",
+  "--dance-rise": "-12px",
+  "--dance-rebound": "-8px",
+  "--editor-background": "#ffffff",
+  "--editor-foreground": "#b79a6b",
+}
+
+function seededRandom(seed: number) {
+  let value = Math.trunc(seed) | 0
+
+  return () => {
+    value += 0x6d2b79f5
+    let result = value
+    result = Math.imul(result ^ (result >>> 15), result | 1)
+    result ^= result + Math.imul(result ^ (result >>> 7), result | 61)
+    return ((result ^ (result >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function getEditorDanceStyle(playback: PlaybackStatus | null): EditorDanceStyle {
+  if (!playback?.isPlaying) return stillEditorStyle
+
+  const random = seededRandom(playback.lastChangeTimestamp)
+  const horizontalMovement = 3 + random() * 2
+  const rise = 10 + random() * 5
+  const backgroundHue = Math.round(random() * 360)
+  const foregroundHue = Math.round(random() * 360)
+
+  return {
+    "--dance-left": `${-horizontalMovement.toFixed(2)}px`,
+    "--dance-right": `${horizontalMovement.toFixed(2)}px`,
+    "--dance-rise": `${-rise.toFixed(2)}px`,
+    "--dance-rebound": `${-(rise * 0.67).toFixed(2)}px`,
+    "--editor-background": `hsl(${backgroundHue} 65% 92%)`,
+    "--editor-foreground": `hsl(${foregroundHue} 55% 28%)`,
+  }
 }
 
 // Replace this with the origin hosting EarSketch.
@@ -73,6 +122,7 @@ export function EarSketchStatus() {
   const [editorContents, setEditorContents] = useState("")
   const [playback, setPlayback] = useState<PlaybackStatus | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const editorDanceStyle = getEditorDanceStyle(playback)
 
   const refresh = useCallback(async () => {
     try {
@@ -123,6 +173,7 @@ export function EarSketchStatus() {
           className={`editor-contents${
             playback?.isPlaying ? " editor-contents--playing" : ""
           }`}
+          style={editorDanceStyle}
         >
           <code>{editorContents}</code>
         </pre>
