@@ -4,6 +4,10 @@
   "name": "Sequencer",
   "version": "1.0",
   "description": "A simple extension starting point for development",
+  "icons": {
+    "32": "icon32.png",
+    "128": "icon128.png"
+  },
   "side_panel": {
     "default_path": "index.html"
   },
