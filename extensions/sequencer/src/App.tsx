@@ -68,17 +68,17 @@ function App() {
     <div className="page">
       <h1>Sequencer</h1>
       <p>A step sequencer for building beats inside EarSketch.</p>
-
-      <label>
-        <p>Number of oscillators:{' '}</p>
-        <input
-          type="number"
-          min={1}
-          value={numOscillators}
-          onChange={(e) => setNumOscillators(Number(e.target.value))}
-        />
-      </label>
-
+      {Array.from({ length: nSteps }, (_, i) => (
+      <input
+        type="checkbox"
+        checked={steps[i]}
+        onChange={() => {
+          const newSteps = [...steps]
+          newSteps[i] = !newSteps[i]
+          setSteps(newSteps)
+        }}
+      />))}
+        {JSON.stringify(steps)}
       <button onClick={() => handlePlay()}>Play</button>
       <button onClick={() => handlePauseResume()}>Pause / Resume</button>
     </div>
