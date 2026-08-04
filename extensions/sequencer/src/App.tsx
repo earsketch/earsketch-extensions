@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [numOscillators, setNumOscillators] = useState(1)
   const tempo = 120
   const nSteps = 16
   const audioCtxRef = useRef<AudioContext | null>(null)
@@ -17,43 +16,33 @@ function App() {
   useEffect(() => {
     if (!isPlaying) 
       return
-    const period = 60 / tempo * 1000 // in milliseconds
-    const intervalID = setInterval(myCallback, period);
+    const period = 60 / tempo * 1000 
 
-    function myCallback() {
-    setIBeat((prev) => (prev + 1) % nSteps);
-    if (!audioCtxRef.current) {
-      audioCtxRef.current = new AudioContext()
-    }
-    const audioCtx = audioCtxRef.current
-    const noteDuration = 0.5
+    const intervalID = setInterval(() => {
+      setIBeat((prevBeat) => {
+        const nextBeat = (prevBeat + 1) % nSteps
 
-    if (steps[iBeat]) {
-      const osc = audioCtx.createOscillator()
-      osc.connect(audioCtx.destination)
-      const startTime = audioCtx.currentTime
-      osc.start(startTime)
-      osc.stop(startTime + noteDuration)
-    }
-  }
+        if (steps[nextBeat] && audioCtxRef.current) {
+          const osc = audioCtxRef.current.createOscillator()
+          osc.connect(audioCtxRef.current.destination)
+          osc.start()
+          osc.stop(audioCtxRef.current.currentTime + 0.1)
+        }
+
+        return nextBeat
+      })
+    }, period)
+
     return () => {
       clearInterval(intervalID);
     };
-  }, [iBeat, steps, isPlaying]);
+  }, [isPlaying, steps]);
 
   function handlePlay() {
-    setIsPlaying(!isPlaying)
-    const audioCtx = new AudioContext()
-    audioCtxRef.current = audioCtx
-    const noteDuration = 0.5
-
-    for (let i = 0; i < numOscillators; i++) {
-      const osc = audioCtx.createOscillator()
-      osc.connect(audioCtx.destination)
-      const startTime = audioCtx.currentTime + i * 0.75
-      osc.start(startTime)
-      osc.stop(startTime + noteDuration)
+    if(!audioCtxRef.current) {
+      audioCtxRef.current = new AudioContext()
     }
+    setIsPlaying(!isPlaying)
   }
   
   return (
@@ -71,10 +60,13 @@ function App() {
           setSteps(newSteps)
         }}
       />))}
-        {JSON.stringify(steps)}
-        {JSON.stringify(iBeat)}
+      {JSON.stringify(steps)}
+      {JSON.stringify(iBeat)}
       <button onClick={() => handlePlay()}>Play/Pause</button>
       {JSON.stringify(isPlaying)}
+      <div style ={{ backgroundColor: isPlaying ? 'lightgreen' : 'lightcoral' }}>
+        test
+      </div>
     </div>
   )
 }
