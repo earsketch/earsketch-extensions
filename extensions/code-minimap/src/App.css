@@ -184,7 +184,7 @@
 }
 
 .minimap-page {
-  padding: 12px;
+  padding: 6px;
   display: flex;
   flex-direction: column;
 }
@@ -200,13 +200,11 @@
   max-height: 500px;
   margin: 0 0 0 auto;
   padding: 6px;
-
   font-size: 6px;
   line-height: 7px;
   text-align: left;
   white-space: pre;
   overflow: auto;
-
   border: 1px solid #cccccc;
   background: white;
   color: #243b4d;
