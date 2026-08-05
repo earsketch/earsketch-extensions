@@ -5,7 +5,7 @@
   "private": true,
   "workspaces": [
     "extensions/*",
-    "lib/*"
+    "extension-sdk"
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
