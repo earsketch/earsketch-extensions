@@ -10,10 +10,18 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present",
+    "lint": "eslint extensions sdk",
     "format": "npm run format --workspaces --if-present",
     "dev:hello-world": "npm run dev --workspace hello-world",
     "build:hello-world": "npm run build --workspace hello-world"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.6.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "typescript-eslint": "^8.62.0"
   },
   "license": "MIT"
 }
