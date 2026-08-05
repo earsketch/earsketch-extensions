@@ -11,9 +11,5 @@
   "side_panel": {
     "default_path": "index.html"
   },
-  "permissions": [
-    "getEditorContents",
-    "getPlaybackStatus",
-    "sidePanel"
-  ]
+  "permissions": ["getEditorContents", "getPlaybackStatus", "sidePanel"]
 }
