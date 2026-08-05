@@ -8,7 +8,9 @@
   border-radius: 4px;
   transform: translate3d(0, 0, 0);
   transform-origin: center bottom;
-  transition: color 180ms ease, background-color 180ms ease;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
 }
 
 .editor-contents code {
@@ -28,8 +30,8 @@
   }
 
   22% {
-    transform: translate3d(var(--dance-left), var(--dance-rise), 0) rotate(-1deg)
-      scale(1.015);
+    transform: translate3d(var(--dance-left), var(--dance-rise), 0)
+      rotate(-1deg) scale(1.015);
   }
 
   44% {
@@ -37,8 +39,8 @@
   }
 
   68% {
-    transform: translate3d(var(--dance-right), var(--dance-rebound), 0) rotate(1deg)
-      scale(1.01);
+    transform: translate3d(var(--dance-right), var(--dance-rebound), 0)
+      rotate(1deg) scale(1.01);
   }
 
   84% {
@@ -221,7 +223,7 @@
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: -4.5px;
     border: 5px solid transparent;

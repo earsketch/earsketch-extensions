@@ -32,8 +32,6 @@ touch public/es-ext.json
   "side_panel": {
     "default_path": "index.html"
   },
-  "permissions": [
-    "sidePanel"
-  ]
+  "permissions": ["sidePanel"]
 }
 ```

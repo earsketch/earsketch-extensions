@@ -1,29 +1,24 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react"
-import {
-  requestEarSketch,
-  type PlaybackStatus,
-} from "@earsketch/extension-sdk"
+import { requestEarSketch, type PlaybackStatus } from "@earsketch/extension-sdk"
 
 function useExtCommsLogger() {
   return useEffect(() => {
-  const onMessage = (event: MessageEvent) => {
-    console.log("[CodeViz] message received", {
-      origin: event.origin,
-      data: event.data,
-      sourceIsParent: event.source === window.parent,
-    })
-  }
+    const onMessage = (event: MessageEvent) => {
+      console.log("[CodeViz] message received", {
+        origin: event.origin,
+        data: event.data,
+        sourceIsParent: event.source === window.parent,
+      })
+    }
 
-  window.addEventListener("message", onMessage)
-  return () => window.removeEventListener("message", onMessage)
-}, [])
+    window.addEventListener("message", onMessage)
+    return () => window.removeEventListener("message", onMessage)
+  }, [])
 }
 
 export function CodeViz() {
   useExtCommsLogger()
-  return (
-    <EarSketchStatus />
-  )
+  return <EarSketchStatus />
 }
 
 interface EditorDanceStyle extends CSSProperties {
@@ -56,7 +51,9 @@ function seededRandom(seed: number) {
   }
 }
 
-function getEditorDanceStyle(playback: PlaybackStatus | null): EditorDanceStyle {
+function getEditorDanceStyle(
+  playback: PlaybackStatus | null,
+): EditorDanceStyle {
   if (!playback?.isPlaying) return stillEditorStyle
 
   const random = seededRandom(playback.lastChangeTimestamp)
@@ -85,22 +82,16 @@ export function EarSketchStatus() {
     try {
       // Query sequentially because the current API responses do not include
       // request IDs for matching concurrent requests.
-      const contents = await requestEarSketch<string>(
-        "getEditorContents"
-      )
+      const contents = await requestEarSketch<string>("getEditorContents")
 
       const playbackStatus =
-        await requestEarSketch<PlaybackStatus>(
-          "getPlaybackStatus"
-        )
+        await requestEarSketch<PlaybackStatus>("getPlaybackStatus")
 
       setError(null)
       setEditorContents(contents)
       setPlayback(playbackStatus)
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "EarSketch request failed"
-      )
+      setError(err instanceof Error ? err.message : "EarSketch request failed")
     }
   }, [])
 

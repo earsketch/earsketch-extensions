@@ -16,17 +16,17 @@ export interface EarSketchRequestOptions {
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
+  return typeof value === "object" && value !== null
 }
 
 function isEarSketchErrorResponse(
   value: unknown,
 ): value is EarSketchErrorResponse {
-  return isRecord(value) && typeof value.error === 'string'
+  return isRecord(value) && typeof value.error === "string"
 }
 
 function parseResponse(data: unknown): unknown {
-  if (typeof data !== 'string') return data
+  if (typeof data !== "string") return data
 
   try {
     return JSON.parse(data) as unknown
@@ -38,18 +38,18 @@ function parseResponse(data: unknown): unknown {
 
 export function requestEarSketch<T>(
   fn: string,
-  { targetOrigin = '*' }: EarSketchRequestOptions = {},
+  { targetOrigin = "*" }: EarSketchRequestOptions = {},
 ): Promise<T> {
   return new Promise((resolve, reject) => {
     const handleMessage = (event: MessageEvent) => {
       if (
         event.source !== window.parent ||
-        (targetOrigin !== '*' && event.origin !== targetOrigin)
+        (targetOrigin !== "*" && event.origin !== targetOrigin)
       ) {
         return
       }
 
-      window.removeEventListener('message', handleMessage)
+      window.removeEventListener("message", handleMessage)
 
       const response = parseResponse(event.data)
 
@@ -63,7 +63,7 @@ export function requestEarSketch<T>(
 
     const request: EarSketchRequest = { fn }
 
-    window.addEventListener('message', handleMessage)
+    window.addEventListener("message", handleMessage)
     window.parent.postMessage(JSON.stringify(request), targetOrigin)
   })
 }

@@ -40,8 +40,8 @@ function App() {
   }
 
   if (!isOpen) {
-  return null
-}
+    return null
+  }
   return (
     <main className="tip-page">
       <section className="tip-card">
@@ -57,10 +57,7 @@ function App() {
         <p className="tip-text">{tips[tipIndex]}</p>
 
         <div className="tip-bottom">
-          <button
-            type="button"
-            onClick={() => setIsOpen(false)}
-          >
+          <button type="button" onClick={() => setIsOpen(false)}>
             Close
           </button>
 

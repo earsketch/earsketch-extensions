@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  
+
   background: #f4f6f8;
   color: #1f2933;
 }
@@ -32,9 +32,8 @@ body {
   align-items: center;
   gap: 12px;
   padding-bottom: 16px;
-  border-bottom: 3px solid #f3b33d
+  border-bottom: 3px solid #f3b33d;
 }
-
 
 .line {
   margin: 0 0 3px;
@@ -58,14 +57,12 @@ h1 {
   line-height: 1.5;
 }
 
-
 .tip-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 15px;
 }
-
 
 .tip-buttons {
   display: flex;

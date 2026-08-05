@@ -1,6 +1,6 @@
 export default {
   semi: false,
-  singleQuote: true,
+  singleQuote: false,
   tabWidth: 2,
   useTabs: false,
 }
