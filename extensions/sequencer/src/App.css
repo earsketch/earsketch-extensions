@@ -1,0 +1,10 @@
+.page {
+  padding: 48px;
+  max-width: 720px;
+}
+
+.page p {
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+}
