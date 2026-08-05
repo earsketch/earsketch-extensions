@@ -1,4 +1,8 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react"
+import {
+  requestEarSketch,
+  type PlaybackStatus,
+} from "@earsketch/extension-sdk"
 
 function useExtCommsLogger() {
   return useEffect(() => {
@@ -20,11 +24,6 @@ export function CodeViz() {
   return (
     <EarSketchStatus />
   )
-}
-
-interface PlaybackStatus {
-  isPlaying: boolean
-  lastChangeTimestamp: number
 }
 
 interface EditorDanceStyle extends CSSProperties {
@@ -74,48 +73,6 @@ function getEditorDanceStyle(playback: PlaybackStatus | null): EditorDanceStyle 
     "--editor-background": `hsl(${backgroundHue} 65% 92%)`,
     "--editor-foreground": `hsl(${foregroundHue} 55% 28%)`,
   }
-}
-
-// Replace this with the origin hosting EarSketch.
-// const EARSKETCH_ORIGIN = "https://earsketch.gatech.edu"
-
-function requestEarSketch<T>(fn: string): Promise<T> {
-  return new Promise((resolve, reject) => {
-    const handleMessage = (event: MessageEvent) => {
-      if (
-        event.source !== window.parent
-        // || event.origin !== "http://localhost:5173" // TODO whats wrong here
-      ) {
-        return
-      }
-
-      window.removeEventListener("message", handleMessage)
-
-      try {
-        const result =
-          typeof event.data === "string"
-            ? JSON.parse(event.data)
-            : event.data
-
-        if (result?.error) {
-          reject(new Error(result.error))
-          return
-        }
-
-        resolve(result as T)
-      } catch {
-        // getEditorContents returns the script directly, which might not be JSON.
-        resolve(event.data as T)
-      }
-    }
-
-    window.addEventListener("message", handleMessage)
-
-    window.parent.postMessage(
-      JSON.stringify({ fn }),
-      "*"
-    )
-  })
 }
 
 export function EarSketchStatus() {
