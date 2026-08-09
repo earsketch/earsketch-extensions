@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const tempo = 120
+  const tempo = 90
   const nSteps = 16
   const audioCtxRef = useRef<AudioContext | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -13,22 +13,59 @@ function App() {
     true, false, false, true, false, false, true, false,
   ])
 
+  // async function playBeats() {
+  //   if (steps[nextBeat] && audioCtxRef.current) {
+  //     try{
+  //       const url = 'https://earsketch-test.ersktch.gatech.edu/backend-static/MakeBeat/OS_CLAP01.flac'
+  //       const response = await fetch(url)
+  //       const buffer = await response.arrayBuffer()
+  //       const audioBuffer = await audioCtxRef.current.decodeAudioData(buffer)
+  //       const source = audioCtxRef.current!.createBufferSource()
+  //       source.buffer = audioBuffer
+  //       source.connect(audioCtxRef.current!.destination)
+  //       source.start()
+  //     } catch (error) {
+  //       console.error('Error loading sound:', error)
+  //     }
+  //     // const osc = audioCtxRef.current.createOscillator()
+  //     // osc.connect(audioCtxRef.current.destination)
+  //     // osc.start()
+  //     // osc.stop(audioCtxRef.current.currentTime + 0.1)
+  //   }
+  //   return nextBeat
+  // }
+
+  const playBeats = async (nextBeat: number) => {
+    if (steps[nextBeat] && audioCtxRef.current) {
+      try {
+        const url = 'https://earsketch-test.ersktch.gatech.edu/backend-static/MakeBeat/OS_CLAP01.flac'
+        const response = await fetch(url)
+        const buffer = await response.arrayBuffer()
+        const audioBuffer = await audioCtxRef.current.decodeAudioData(buffer)
+        const source = audioCtxRef.current.createBufferSource()
+        source.buffer = audioBuffer
+        source.connect(audioCtxRef.current.destination)
+        source.start()
+      } catch (error) {
+        console.error('Error loading sound:', error)
+      }
+      // const osc = audioCtxRef.current.createOscillator()
+      // osc.connect(audioCtxRef.current.destination)
+      // osc.start()
+      // osc.stop(audioCtxRef.current.currentTime + 0.1)
+    }
+  }
+
   useEffect(() => {
     if (!isPlaying) 
       return
-    const period = 60 / tempo * 1000 
+
+    const period = 60 / tempo * 1000 / 4
 
     const intervalID = setInterval(() => {
       setIBeat((prevBeat) => {
         const nextBeat = (prevBeat + 1) % nSteps
-
-        if (steps[nextBeat] && audioCtxRef.current) {
-          const osc = audioCtxRef.current.createOscillator()
-          osc.connect(audioCtxRef.current.destination)
-          osc.start()
-          osc.stop(audioCtxRef.current.currentTime + 0.1)
-        }
-
+        playBeats(nextBeat)
         return nextBeat
       })
     }, period)
@@ -49,24 +86,32 @@ function App() {
     <div className="page">
       <h1>Sequencer</h1>
       <p>A step sequencer for building beats inside EarSketch.</p>
-      {Array.from({ length: nSteps }, (_, i) => (
-      <input
-        key={i}
-        type="checkbox"
-        checked={steps[i]}
-        onChange={() => {
-          const newSteps = [...steps]
-          newSteps[i] = !newSteps[i]
-          setSteps(newSteps)
-        }}
-      />))}
-      {JSON.stringify(steps)}
-      {JSON.stringify(iBeat)}
-      <button onClick={() => handlePlay()}>Play/Pause</button>
-      {JSON.stringify(isPlaying)}
-      <div style ={{ backgroundColor: isPlaying ? 'lightgreen' : 'lightcoral' }}>
-        test
+      <div className="sequencer-grid">
+        <div className="track-row">
+          <span className="track-label">Oscillator</span>
+          <div className="track-cells">
+            {Array.from({ length: nSteps }, (_, i) => (
+              <button
+                key={i}
+                type="button"
+                className={steps[i] ? 'step step-on' : 'step'}
+                aria-pressed={steps[i]}
+                onClick={() => {
+                  const newSteps = [...steps]
+                  newSteps[i] = !newSteps[i]
+                  setSteps(newSteps)
+                }}
+              />
+            ))}
+          </div>
+        </div>
       </div>
+      {/* {JSON.stringify(steps)} */}
+      {JSON.stringify(iBeat)}
+      <button onClick={() => handlePlay()}>{isPlaying ? 'Pause' : 'Play'}</button>
+      {/* <div style ={{ backgroundColor: isPlaying ? 'lightgreen' : 'lightcoral' }}>
+        test
+      </div> */}
     </div>
   )
 }

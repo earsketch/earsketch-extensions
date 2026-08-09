@@ -8,3 +8,26 @@
   font-size: 16px;
   line-height: 1.5;
 }
+
+.track-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.track-cells {
+  display: flex;
+  gap: 4px;
+}
+
+.step {
+  width: 32px;
+  height: 32px;
+  background: #c3bfbf;
+  border: none;
+  cursor: pointer;
+}
+
+.step-on {
+  background: #385b7b;
+}
