@@ -2,9 +2,10 @@ import { useState, useRef, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const tempo = 90
+  const [tempo, setTempo] = useState(90)
   const nSteps = 16
   const audioCtxRef = useRef<AudioContext | null>(null)
+  const currentBeatRef = useRef<number>(0)
   const [isPlaying, setIsPlaying] = useState(false)
 
   const [iBeat, setIBeat] = useState(0)
@@ -12,28 +13,6 @@ function App() {
     true, false, false, true, false, false, true, false,
     true, false, false, true, false, false, true, false,
   ])
-
-  // async function playBeats() {
-  //   if (steps[nextBeat] && audioCtxRef.current) {
-  //     try{
-  //       const url = 'https://earsketch-test.ersktch.gatech.edu/backend-static/MakeBeat/OS_CLAP01.flac'
-  //       const response = await fetch(url)
-  //       const buffer = await response.arrayBuffer()
-  //       const audioBuffer = await audioCtxRef.current.decodeAudioData(buffer)
-  //       const source = audioCtxRef.current!.createBufferSource()
-  //       source.buffer = audioBuffer
-  //       source.connect(audioCtxRef.current!.destination)
-  //       source.start()
-  //     } catch (error) {
-  //       console.error('Error loading sound:', error)
-  //     }
-  //     // const osc = audioCtxRef.current.createOscillator()
-  //     // osc.connect(audioCtxRef.current.destination)
-  //     // osc.start()
-  //     // osc.stop(audioCtxRef.current.currentTime + 0.1)
-  //   }
-  //   return nextBeat
-  // }
 
   const playBeats = async (nextBeat: number) => {
     if (steps[nextBeat] && audioCtxRef.current) {
@@ -57,23 +36,28 @@ function App() {
   }
 
   useEffect(() => {
-    if (!isPlaying) 
+    if (!isPlaying)
+      return
+    playBeats(currentBeatRef.current)
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (!isPlaying)
       return
 
     const period = 60 / tempo * 1000 / 4
 
     const intervalID = setInterval(() => {
-      setIBeat((prevBeat) => {
-        const nextBeat = (prevBeat + 1) % nSteps
-        playBeats(nextBeat)
-        return nextBeat
-      })
+      const nextBeat = (currentBeatRef.current + 1) % nSteps
+      currentBeatRef.current = nextBeat
+      playBeats(nextBeat)
+      setIBeat(nextBeat)
     }, period)
 
     return () => {
       clearInterval(intervalID);
     };
-  }, [isPlaying, steps]);
+  }, [isPlaying, tempo, steps]);
 
   function handlePlay() {
     if(!audioCtxRef.current) {
@@ -81,20 +65,39 @@ function App() {
     }
     setIsPlaying(!isPlaying)
   }
-  
+
+  const beatString = steps.map(s => s ? '0' : '-').join('')
+  const sound = 'OS_CLAP01'
+  const track = 1
+  const start = 1
+  const earsketchCode = `sound = ${sound}\ntrack = ${track}\nstart = ${start}\nbeat = "${beatString}"\nmakeBeat(sound, track, start, beat)`
+
   return (
     <div className="page">
       <h1>Sequencer</h1>
       <p>A step sequencer for building beats inside EarSketch.</p>
+      <div className="controls">
+        <button onClick={() => handlePlay()}>{isPlaying ? 'Pause' : 'Play'}</button>
+        <label>
+          BPM:
+          <input
+            type="number"
+            min={40}
+            max={240}
+            value={tempo}
+            onChange={(e) => setTempo(Number(e.target.value))}
+          />
+        </label>
+      </div>
       <div className="sequencer-grid">
         <div className="track-row">
-          <span className="track-label">Oscillator</span>
+          <span className="track-label">Clap</span>
           <div className="track-cells">
             {Array.from({ length: nSteps }, (_, i) => (
               <button
                 key={i}
                 type="button"
-                className={steps[i] ? 'step step-on' : 'step'}
+                className={`step ${steps[i] ? 'step-on' : ''} ${iBeat === i ? 'step-active' : ''}`}
                 aria-pressed={steps[i]}
                 onClick={() => {
                   const newSteps = [...steps]
@@ -106,12 +109,7 @@ function App() {
           </div>
         </div>
       </div>
-      {/* {JSON.stringify(steps)} */}
-      {JSON.stringify(iBeat)}
-      <button onClick={() => handlePlay()}>{isPlaying ? 'Pause' : 'Play'}</button>
-      {/* <div style ={{ backgroundColor: isPlaying ? 'lightgreen' : 'lightcoral' }}>
-        test
-      </div> */}
+      <pre className="code-output">{earsketchCode}</pre>
     </div>
   )
 }
