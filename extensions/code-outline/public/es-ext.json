@@ -1,7 +1,7 @@
 {
   "manifest_version": 1,
   "extension_api_version": "1",
-  "name": "Code Outline",
+  "name": "Code Score",
   "version": "1.0",
   "description": "A simple extension starting point for development",
   "icons": {
