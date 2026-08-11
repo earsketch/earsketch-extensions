@@ -21,16 +21,10 @@ function useExtCommsLogger() {
 }
 
 export function CodeViz() {
-  const [editorContents, setEditorContents] = useState("")
-
   useExtCommsLogger()
   return (
     <>
-      <HydraCanvas text={editorContents} />
-      <EarSketchStatus
-        editorContents={editorContents}
-        onEditorContentsChange={setEditorContents}
-      />
+      <HydraCanvas text={"EarSketch Rules!"} />
     </>
   )
 }
