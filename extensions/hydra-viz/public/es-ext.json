@@ -1,0 +1,13 @@
+{
+  "manifest_version": 1,
+  "extension_api_version": "1",
+  "name": "Hydra Viz",
+  "version": "1.0",
+  "description": "A visualization to go with your music",
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "permissions": [
+    "sidePanel"
+  ]
+}
