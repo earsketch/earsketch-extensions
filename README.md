@@ -18,6 +18,8 @@ After copying the extension:
 
 - Change the `name` in `public/es-ext.json`
 
+- Change `export default createViteConfig("my-extension")` in vite.config.ts
+
 - Update the contents of `README.md`
 
 ### Install and run
