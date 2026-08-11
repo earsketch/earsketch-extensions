@@ -1,3 +1,8 @@
 import { createViteConfig } from "../../vite.config.shared.mts"
 
-export default createViteConfig("tip-of-the-day")
+const config = createViteConfig("tip-of-the-day")
+
+export default {
+  ...config,
+  base: "/",
+}
