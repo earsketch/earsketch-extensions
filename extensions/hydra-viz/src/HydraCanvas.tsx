@@ -69,13 +69,13 @@ export function HydraCanvas({ text }: HydraCanvasProps) {
     })
 
     const synth = hydra.synth
-    synth.s0.init({ src: textCanvas })
     synth
-      .src(synth.s0)
-      // .kaleid(5)
-      // .color(0.25, 0.65, 1.1)
-      // .rotate(0, 0.08)
-      .modulate(synth.noise(3, 0.15), 0.02)
+      .osc(12, 0.1, 1)
+      .kaleid(5)
+      .color(0.25, 0.65, 1.1)
+      .rotate(0, 0.08)
+      // .modulate(synth.noise(3, 0.15), 0.02)
+      .modulate(synth.osc())
       .out(synth.o0)
 
     const resize = () => {
