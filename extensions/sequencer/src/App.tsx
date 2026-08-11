@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [tempo, setTempo] = useState(90)
+  const [tempo, setTempo] = useState(120)
   const nSteps = 16
   const audioCtxRef = useRef<AudioContext | null>(null)
   const currentBeatRef = useRef<number>(0)
@@ -63,6 +63,10 @@ function App() {
     if(!audioCtxRef.current) {
       audioCtxRef.current = new AudioContext()
     }
+    if (isPlaying) {
+      currentBeatRef.current = 0
+      setIBeat(0)
+    }
     setIsPlaying(!isPlaying)
   }
 
@@ -82,8 +86,8 @@ function App() {
           BPM:
           <input
             type="number"
-            min={40}
-            max={240}
+            min={20}
+            max={200}
             value={tempo}
             onChange={(e) => setTempo(Number(e.target.value))}
           />
