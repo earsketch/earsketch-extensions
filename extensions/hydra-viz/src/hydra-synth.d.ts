@@ -4,6 +4,7 @@ declare module "hydra-synth" {
   }
 
   export interface HydraSource {
+    brightness(amount: number): HydraSource
     color(red?: number, green?: number, blue?: number, alpha?: number): HydraSource
     kaleid(sides?: number): HydraSource
     modulate(source: HydraSource, amount?: number): HydraSource
