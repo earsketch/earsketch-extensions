@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import Hydra from "hydra-synth"
+import { runHydraSketch } from "./hydraSketch"
 
 interface HydraCanvasProps {
   text: string
@@ -68,14 +69,7 @@ export function HydraCanvas({ text }: HydraCanvasProps) {
       makeGlobal: false,
     })
 
-    const synth = hydra.synth
-    synth
-      .osc(12, 0.2, 1)
-      .brightness(0.3)
-      .rotate(0, 0.08)
-      .modulate(synth.noise(3, 0.15), 0.2)
-      .modulate(synth.osc())
-      .out(synth.o0)
+    runHydraSketch(hydra.synth)
 
     const resize = () => {
       const bounds = canvas.getBoundingClientRect()
@@ -118,7 +112,10 @@ export function HydraCanvas({ text }: HydraCanvasProps) {
   }, [text])
 
   return (
-    <section className="hydra-visual" aria-label={`Hydra visualization of ${text}`}>
+    <section
+      className="hydra-visual"
+      aria-label={`Hydra visualization of ${text}`}
+    >
       <canvas ref={canvasRef} className="hydra-canvas" />
     </section>
   )
