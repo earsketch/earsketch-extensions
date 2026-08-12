@@ -1,3 +1,5 @@
+@import "../../../sdk/theme.css";
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -87,4 +89,55 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+main {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+}
+
+form {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.url-controls {
+  display: flex;
+  gap: 8px;
+}
+
+input {
+  min-width: 0;
+  flex: 1;
+  padding: 8px;
+}
+
+button {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 4px;
+  color: white;
+  background: var(--earsketch-blue);
+  cursor: pointer;
+}
+
+iframe {
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  border: 0;
+}
+
+.empty-state {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  padding: 24px;
 }
