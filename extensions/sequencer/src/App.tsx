@@ -4,6 +4,7 @@ import './App.css'
 function App() {
   const [tempo, setTempo] = useState(120)
   const nSteps = 16
+  const groupSize = 4
   const audioCtxRef = useRef<AudioContext | null>(null)
   const currentBeatRef = useRef<number>(0)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -28,10 +29,6 @@ function App() {
       } catch (error) {
         console.error('Error loading sound:', error)
       }
-      // const osc = audioCtxRef.current.createOscillator()
-      // osc.connect(audioCtxRef.current.destination)
-      // osc.start()
-      // osc.stop(audioCtxRef.current.currentTime + 0.1)
     }
   }
 
@@ -97,18 +94,25 @@ function App() {
         <div className="track-row">
           <span className="track-label">Clap</span>
           <div className="track-cells">
-            {Array.from({ length: nSteps }, (_, i) => (
-              <button
-                key={i}
-                type="button"
-                className={`step ${steps[i] ? 'step-on' : ''} ${iBeat === i ? 'step-active' : ''}`}
-                aria-pressed={steps[i]}
-                onClick={() => {
-                  const newSteps = [...steps]
-                  newSteps[i] = !newSteps[i]
-                  setSteps(newSteps)
-                }}
-              />
+            {Array.from({ length: nSteps / groupSize }, (_, g) => (
+              <div className="step-group" key={g}>
+                {Array.from({ length: groupSize }, (_, j) => {
+                  const i = g * groupSize + j
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`step ${steps[i] ? 'step-on' : ''} ${iBeat === i ? 'step-active' : ''}`}
+                      aria-pressed={steps[i]}
+                      onClick={() => {
+                        const newSteps = [...steps]
+                        newSteps[i] = !newSteps[i]
+                        setSteps(newSteps)
+                      }}
+                    />
+                  )
+                })}
+              </div>
             ))}
           </div>
         </div>
