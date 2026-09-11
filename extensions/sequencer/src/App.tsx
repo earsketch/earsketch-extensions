@@ -5,6 +5,7 @@ function App() {
   const [tempo, setTempo] = useState(120)
   const nSteps = 16
   const groupSize = 4
+  const pairSize = 2
   const audioCtxRef = useRef<AudioContext | null>(null)
   const currentBeatRef = useRef<number>(0)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -94,22 +95,29 @@ function App() {
         <div className="track-row">
           <span className="track-label">Clap</span>
           <div className="track-cells">
-            {Array.from({ length: nSteps / groupSize }, (_, g) => (
-              <div className="step-group" key={g}>
-                {Array.from({ length: groupSize }, (_, j) => {
-                  const i = g * groupSize + j
+            {Array.from({ length: nSteps / groupSize / pairSize }, (_, p) => (
+              <div className="step-pair" key={p}>
+                {Array.from({ length: pairSize }, (_, gj) => {
+                  const g = p * pairSize + gj
                   return (
-                    <button
-                      key={i}
-                      type="button"
-                      className={`step ${steps[i] ? 'step-on' : ''} ${iBeat === i ? 'step-active' : ''}`}
-                      aria-pressed={steps[i]}
-                      onClick={() => {
-                        const newSteps = [...steps]
-                        newSteps[i] = !newSteps[i]
-                        setSteps(newSteps)
-                      }}
-                    />
+                    <div className="step-group" key={g}>
+                      {Array.from({ length: groupSize }, (_, j) => {
+                        const i = g * groupSize + j
+                        return (
+                          <button
+                            key={i}
+                            type="button"
+                            className={`step ${steps[i] ? 'step-on' : ''} ${iBeat === i ? 'step-active' : ''}`}
+                            aria-pressed={steps[i]}
+                            onClick={() => {
+                              const newSteps = [...steps]
+                              newSteps[i] = !newSteps[i]
+                              setSteps(newSteps)
+                            }}
+                          />
+                        )
+                      })}
+                    </div>
                   )
                 })}
               </div>

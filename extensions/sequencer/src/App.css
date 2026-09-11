@@ -65,8 +65,16 @@
   gap: 12px 16px;
 }
 
+.step-pair {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 12px 16px;
+}
+
 .step-group {
   display: flex;
+  flex-shrink: 0;
   gap: 4px;
 }
 
@@ -77,6 +85,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .step-on {
