@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import './App.css'
+import { useEffect, useState } from "react"
+import "./App.css"
 
 function requestEarSketch<T>(fn: string): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -15,9 +15,7 @@ function requestEarSketch<T>(fn: string): Promise<T> {
 
       try {
         const result =
-          typeof event.data === "string"
-            ? JSON.parse(event.data)
-            : event.data
+          typeof event.data === "string" ? JSON.parse(event.data) : event.data
 
         if (result?.error) {
           reject(new Error(result.error))
@@ -33,28 +31,24 @@ function requestEarSketch<T>(fn: string): Promise<T> {
 
     window.addEventListener("message", handleMessage)
 
-    window.parent.postMessage(
-      JSON.stringify({ fn }),
-      "*"
-    )
+    window.parent.postMessage(JSON.stringify({ fn }), "*")
   })
 }
-
-
 
 function App() {
   const [code, setCode] = useState("")
   async function fetchCode() {
-    const contents = await requestEarSketch<string>(
-      "getEditorContents"
-    )
+    const contents = await requestEarSketch<string>("getEditorContents")
 
     setCode(contents)
   }
 
-  useEffect(() => { fetchCode()
+  useEffect(() => {
+    fetchCode()
 
-    const interval = setInterval(() => {fetchCode()}, 1000)
+    const interval = setInterval(() => {
+      fetchCode()
+    }, 1000)
     return () => {
       clearInterval(interval)
     }
@@ -64,9 +58,7 @@ function App() {
     <main className="minimap-page">
       <h1>Code Minimap</h1>
 
-      <pre className="minimap">
-        {code || "Open an EarSketch script"}
-      </pre>
+      <pre className="minimap">{code || "Open an EarSketch script"}</pre>
     </main>
   )
 }
