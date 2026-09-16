@@ -1,0 +1,11 @@
+{
+  "manifest_version": 1,
+  "extension_api_version": "1",
+  "name": "Code Minimap",
+  "version": "1.0",
+  "description": "A zoomed-out view of the code as a whole",
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "permissions": ["getEditorContents", "getPlaybackStatus", "sidePanel"]
+}
