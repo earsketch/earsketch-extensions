@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@earsketch/extension-sdk": "*",
+    "@lezer/python": "^1.1.19",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   }
