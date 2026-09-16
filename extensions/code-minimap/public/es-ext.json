@@ -3,11 +3,7 @@
   "extension_api_version": "1",
   "name": "Code Minimap",
   "version": "1.0",
-  "description": "A simple extension starting point for development",
-  "icons": {
-    "32": "earsktch_extension_icon_32.png",
-    "128": "earsktch_extension_icon_128.png"
-  },
+  "description": "A zoomed-out view of the code as a whole",
   "side_panel": {
     "default_path": "index.html"
   },
