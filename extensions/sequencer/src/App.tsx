@@ -4,8 +4,6 @@ import './App.css'
 function App() {
   const [tempo, setTempo] = useState(120)
   const nSteps = 16
-  const groupSize = 4
-  const pairSize = 2
   const audioCtxRef = useRef<AudioContext | null>(null)
   const currentBeatRef = useRef<number>(0)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -74,6 +72,12 @@ function App() {
   const start = 1
   const earsketchCode = `sound = ${sound}\ntrack = ${track}\nstart = ${start}\nbeat = "${beatString}"\nmakeBeat(sound, track, start, beat)`
 
+  function handleStepClick(index: number) {
+    const newSteps = [...steps]
+    newSteps[index] = !newSteps[index]
+    setSteps(newSteps)
+  }
+
   return (
     <div className="page">
       <h1>Sequencer</h1>
@@ -91,41 +95,15 @@ function App() {
           />
         </label>
       </div>
-      <div className="sequencer-grid">
-        <div className="track-row">
-          <span className="track-label">Clap</span>
-          <div className="track-cells">
-            {Array.from({ length: nSteps / groupSize / pairSize }, (_, p) => (
-              <div className="step-pair" key={p}>
-                {Array.from({ length: pairSize }, (_, gj) => {
-                  const g = p * pairSize + gj
-                  return (
-                    <div className="step-group" key={g}>
-                      {Array.from({ length: groupSize }, (_, j) => {
-                        const i = g * groupSize + j
-                        return (
-                          <button
-                            key={i}
-                            type="button"
-                            className={`step ${steps[i] ? 'step-on' : ''} ${iBeat === i ? 'step-active' : ''}`}
-                            aria-pressed={steps[i]}
-                            onClick={() => {
-                              const newSteps = [...steps]
-                              newSteps[i] = !newSteps[i]
-                              setSteps(newSteps)
-                            }}
-                          />
-                        )
-                      })}
-                    </div>
-                  )
-                })}
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="sequencer">
+        <div id="grid" className="grid">
+            {Array.from({ length: nSteps },(_, i) => (
+            <button className={`step ${steps[i] ? 'step-on' : ''} ${iBeat === i ? 'step-active' : ''}`} key={i} onClick={() => handleStepClick(i)}>
+            </button>
+          ))}
       </div>
       <pre className="code-output">{earsketchCode}</pre>
+    </div>
     </div>
   )
 }

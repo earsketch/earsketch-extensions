@@ -1,6 +1,6 @@
 .page {
   padding: 48px;
-  max-width: 720px;
+  max-width: 100%;
 }
 
 .page p {
@@ -42,50 +42,13 @@
   font-size: 15px;
 }
 
-.sequencer-grid {
-  margin: 0 0 24px;
-}
-
-.track-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.track-label {
-  flex-shrink: 0;
-  padding-top: 6px;
-}
-
-.track-cells {
-  display: flex;
-  flex: 1 1 auto;
-  min-width: 0;
-  flex-wrap: wrap;
-  gap: 12px 16px;
-}
-
-.step-pair {
-  display: flex;
-  flex-wrap: wrap;
-  min-width: 0;
-  gap: 12px 16px;
-}
-
-.step-group {
-  display: flex;
-  flex-shrink: 0;
-  gap: 4px;
-}
-
 .step {
-  width: 32px;
-  height: 32px;
+  width: 2.75rem;
+  height: 2.75rem;
   background: #c3bfbf;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  flex-shrink: 0;
 }
 
 .step-on {
@@ -98,7 +61,7 @@
 }
 
 .code-output {
-  margin: 0;
+  margin: 24px 0 0;
   padding: 16px;
   background: var(--code-bg);
   border: 1px solid var(--border);
@@ -109,3 +72,25 @@
   color: var(--text-h);
   overflow-x: auto;
 }
+
+:root {
+  --step: 2.75rem;   /* one box */
+  --gap: 0.5rem;
+  --testbg: red;
+}
+
+.sequencer {
+  container-type: inline-size;
+  container-name: sequencer;
+  font-size: calc(var(--step) + var(--gap)); /* 1em = one "slot" */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, var(--step)); /* narrowest default */
+  gap: var(--gap);
+  background: white;
+}
+
+@container sequencer (min-width: 8em)  { .grid { grid-template-columns: repeat(8, var(--step)); } }
+@container sequencer (min-width: 16em) { .grid { grid-template-columns: repeat(16, var(--step)); } }
