@@ -1,0 +1,11 @@
+{
+  "manifest_version": 1,
+  "extension_api_version": "1",
+  "name": "Code Score",
+  "version": "1.0",
+  "description": "Earn awards for using programming skills",
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "permissions": ["getEditorContents", "sidePanel"]
+}
