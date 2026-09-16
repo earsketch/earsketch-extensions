@@ -13,9 +13,7 @@ function requestEarSketch<T>(fn: string): Promise<T> {
 
       try {
         const result =
-          typeof event.data === "string"
-            ? JSON.parse(event.data)
-            : event.data
+          typeof event.data === "string" ? JSON.parse(event.data) : event.data
 
         if (result?.error) {
           reject(new Error(result.error))
@@ -30,10 +28,7 @@ function requestEarSketch<T>(fn: string): Promise<T> {
 
     window.addEventListener("message", handleMessage)
 
-    window.parent.postMessage(
-      JSON.stringify({ fn }),
-      "*"
-    )
+    window.parent.postMessage(JSON.stringify({ fn }), "*")
   })
 }
 
@@ -74,13 +69,11 @@ function App() {
   ]
 
   const earnedCount = achievements.filter(
-    achievement => achievement.earned
+    (achievement) => achievement.earned,
   ).length
 
   async function checkCode() {
-    const contents = await requestEarSketch<string>(
-      "getEditorContents"
-    )
+    const contents = await requestEarSketch<string>("getEditorContents")
 
     const tree = parser.parse(contents)
 
@@ -92,10 +85,7 @@ function App() {
 
     tree.iterate({
       enter(node) {
-        if (
-          node.name === "ForStatement" ||
-          node.name === "WhileStatement"
-        ) {
+        if (node.name === "ForStatement" || node.name === "WhileStatement") {
           loops++
         }
 
@@ -130,10 +120,7 @@ function App() {
     ) {
       newTitle = "Variable Beginner"
       newBadge = "🔤"
-    } else if (
-      loops >= 1 &&
-      !shownAchievements.includes("Loop Explorer")
-    ) {
+    } else if (loops >= 1 && !shownAchievements.includes("Loop Explorer")) {
       newTitle = "Loop Explorer"
       newBadge = "🔁"
     } else if (
@@ -142,10 +129,7 @@ function App() {
     ) {
       newTitle = "Logic Builder"
       newBadge = "🧠"
-    } else if (
-      lists >= 1 &&
-      !shownAchievements.includes("List User")
-    ) {
+    } else if (lists >= 1 && !shownAchievements.includes("List User")) {
       newTitle = "List User"
       newBadge = "📋"
     }
@@ -154,10 +138,7 @@ function App() {
       setPopupTitle(newTitle)
       setPopupBadge(newBadge)
 
-      setShownAchievements([
-        ...shownAchievements,
-        newTitle,
-      ])
+      setShownAchievements([...shownAchievements, newTitle])
 
       setTimeout(() => {
         setPopupTitle("")
@@ -179,12 +160,9 @@ function App() {
 
   return (
     <main className="code-score-page">
-
       {popupTitle && (
         <div className="achievement-popup">
-          <div className="popup-badge">
-            {popupBadge}
-          </div>
+          <div className="popup-badge">{popupBadge}</div>
 
           <div>
             <p>ACHIEVEMENT UNLOCKED!</p>
@@ -200,9 +178,7 @@ function App() {
           {earnedCount} / {achievements.length}
         </span>
 
-        <span className="score-label">
-          Achievements
-        </span>
+        <span className="score-label">Achievements</span>
       </div>
 
       <h2>Statistics</h2>
@@ -230,7 +206,7 @@ function App() {
       <h2>Achievements</h2>
 
       <div className="achievement-list">
-        {achievements.map(achievement => (
+        {achievements.map((achievement) => (
           <div
             key={achievement.title}
             className={
@@ -240,9 +216,7 @@ function App() {
             }
           >
             <div className="badge-circle">
-              {achievement.earned
-                ? achievement.badge
-                : "🔒"}
+              {achievement.earned ? achievement.badge : "🔒"}
             </div>
 
             <div className="achievement-info">
@@ -252,7 +226,6 @@ function App() {
           </div>
         ))}
       </div>
-
     </main>
   )
 }
