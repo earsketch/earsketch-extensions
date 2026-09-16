@@ -1,7 +1,8 @@
 import "./App.css"
+import { CodeViz } from "./CodeViz"
 
 function App() {
-  return <h1>Hello, World!</h1>
+  return <CodeViz />
 }
 
 export default App
