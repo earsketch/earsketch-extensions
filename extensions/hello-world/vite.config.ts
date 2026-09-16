@@ -1,7 +1,3 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { createViteConfig } from "../../vite.config.shared.mts"
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-})
+export default createViteConfig("hello-world")

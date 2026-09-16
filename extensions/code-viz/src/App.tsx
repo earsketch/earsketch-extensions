@@ -1,8 +1,8 @@
-import './App.css'
-import { CodeViz } from './CodeViz'
+import "./App.css"
+import { CodeViz } from "./CodeViz"
 
 function App() {
-  return (<CodeViz />)
+  return <CodeViz />
 }
 
 export default App
